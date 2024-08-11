@@ -12,7 +12,7 @@ const handleLogout = async (req, res) => {
   });
 
   if (!userWithRefreshToken) {
-    res.clearCookie("jwt", { httpOnly: true });
+    res.clearCookie("jwt", { httpOnly: true, maxAge: 42 * 60 * 60 * 1000 });
     return res.sendStatus(204);
   }
 
@@ -21,7 +21,7 @@ const handleLogout = async (req, res) => {
     { refreshToken: "" }
   );
 
-  res.clearCookie("jwt", { httpOnly: true }); //Add secure: true in prod
+  res.clearCookie("jwt", { httpOnly: true, maxAge: 42 * 60 * 60 * 1000 }); //Add secure: true in prod
   res.sendStatus(204);
 };
 

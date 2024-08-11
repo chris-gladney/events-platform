@@ -20,7 +20,7 @@ const userLogin = async (req, res) => {
     if (match) {
       const role = Object.values(foundUser.role);
       const accessToken = jwt.sign(
-        { username: foundUser.user, roles: role },
+        { username: foundUser.user },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: 600 }
       );
@@ -33,7 +33,7 @@ const userLogin = async (req, res) => {
 
       await nonGoogleUserdb.findOneAndUpdate(
         { user: foundUser.user },
-        { accessToken: accessToken }
+        { refreshToken: refreshToken }
       );
 
       res.cookie("jwt", refreshToken, {

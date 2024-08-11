@@ -27,6 +27,7 @@ const userLogin = require("./controllers/userLogin");
 const handleRefreshToken = require("./controllers/refreshToken");
 const getEvents = require("./controllers/getEvents");
 const handleLogout = require("./controllers/logout");
+const handlePostEvents = require("./controllers/handlePostEvents");
 
 app.use(
   cors({
@@ -130,50 +131,6 @@ app.get("/login/success", async (req, res) => {
 // Google login ends
 // --------------------------------------------------------------------
 
-// Passport local strategy - trialing jwt tokens
-//---------------------------------------------------------------------
-
-// passport.use(
-//   "local",
-//   new LocalStrategy(
-//     {
-//       usernameField: "user",
-//       passwordField: "pwd",
-//       passReqToCallback: true,
-//     },
-//     async (req, user, pwd, done) => {
-//       let userLogin = await nonGoogleUserdb.findOne({ user: user });
-//       try {
-//         if (!user) {
-//           return done(null, false);
-//         }
-
-//         if (pwd !== userLogin.pwd) {
-//           return done(null, false);
-//         }
-//         return done(null, user);
-//       } catch (err) {
-//         return done(err);
-//       }
-//     }
-//   )
-// );
-
-// app.post(
-//   "/login",
-//   passport.authenticate("local", {
-//     failureRedirect: "/login",
-//   }),
-//   function (req, res) {
-//     res
-//       .status(200)
-//       .send({ message: "Accessed route and verified", user: req.body.user });
-//   }
-// );
-
-// ---------------------------------------------------------------
-// Passport local strategy
-
 app.post("/auth", (req, res) => {
   userLogin(req, res);
 });
@@ -186,15 +143,16 @@ app.get("/logout", (req, res) => {
   handleLogout(req, res);
 });
 
+app.post("/events", (req, res) => {
+  handlePostEvents(req, res);
+});
+
 // Using jwt verify all routes that need to be validated need to be below this
+app.use(verifyJWT);
 
 app.get("/events", (req, res) => {
   getEvents(req, res);
 });
-
-app.post("/events", (req, res) => {
-
-})
 
 app.listen(PORT, () => {
   console.log(`server started at port: ${PORT}`);
