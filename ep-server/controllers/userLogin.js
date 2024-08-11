@@ -18,7 +18,7 @@ const userLogin = async (req, res) => {
 
     const match = await bcrypt.compare(pwd, foundUser.pwd);
     if (match) {
-      const role = Object.values(foundUser.role);
+      
       const accessToken = jwt.sign(
         { username: foundUser.user },
         process.env.ACCESS_TOKEN_SECRET,

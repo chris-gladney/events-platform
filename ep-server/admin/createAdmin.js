@@ -1,15 +1,16 @@
 require("dotenv").config();
 const admindb = require("../model/adminSchema");
 require("../db/connection");
+const bcrypt = require("bcrypt");
 
 const createAdmin = async (args) => {
   const user = args[2];
-  const pwd = args[3];
+  const hashedPwd = await bcrypt.hash(args[3], 10);
 
   try {
     newAdmin = new admindb({
       user: user,
-      pwd: pwd,
+      pwd: hashedPwd,
       role: 5150,
     });
 
