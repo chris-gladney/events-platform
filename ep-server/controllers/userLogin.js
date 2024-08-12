@@ -18,9 +18,8 @@ const userLogin = async (req, res) => {
 
     const match = await bcrypt.compare(pwd, foundUser.pwd);
     if (match) {
-      
       const accessToken = jwt.sign(
-        { username: foundUser.user },
+        { username: foundUser.user, role: foundUser.role },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: 600 }
       );
@@ -41,7 +40,7 @@ const userLogin = async (req, res) => {
         maxAge: 24 * 60 * 60 * 1000,
       });
 
-      res.json({ role: foundUser.role, accessToken });
+      res.json({ role: foundUser.role, user: foundUser.user, accessToken });
     } else {
       res.sendStatus(401);
     }

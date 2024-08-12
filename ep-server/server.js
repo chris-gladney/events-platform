@@ -51,10 +51,6 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get("/hello", (req, res) => {
-  res.json({ message: "Hello" });
-});
-
 app.post("/admin/register", async (req, res) => {
   adminRegister(req, res);
 });
@@ -85,12 +81,11 @@ passport.use(
             email: profile.emails[0].value,
             image: profile.photos[0].value,
             userEvents: [],
-            accessToken: "",
+            refreshToken: "",
           });
 
           await user.save();
         }
-
         return done(null, user);
       } catch {
         return done(error, null);
@@ -124,7 +119,7 @@ app.get("/login/success", async (req, res) => {
   if (req.user) {
     res.status(200).json({ message: "user login", user: req.user });
   } else {
-    res.sendStatus(400).json({ message: "Not Authorised" });
+    // res.sendStatus(400).json({ message: "Not Authorised" });
   }
 });
 
@@ -143,15 +138,15 @@ app.get("/logout", (req, res) => {
   handleLogout(req, res);
 });
 
-app.post("/events", (req, res) => {
-  handlePostEvents(req, res);
-});
-
 // Using jwt verify all routes that need to be validated need to be below this
 app.use(verifyJWT);
 
 app.get("/events", (req, res) => {
   getEvents(req, res);
+});
+
+app.post("/events", (req, res) => {
+  handlePostEvents(req, res);
 });
 
 app.listen(PORT, () => {

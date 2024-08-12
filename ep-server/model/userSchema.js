@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
     email: String,
     image: String,
     userEvents: [],
-    accessToken: String,
+    refreshToken: String,
     role: Number,
   },
   { timestamps: true }

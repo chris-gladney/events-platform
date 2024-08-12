@@ -1,15 +1,8 @@
 const eventsdb = require("../model/eventsSchema");
 
-const getEvents = (req, res) => {
-  let events = [];
-  eventsdb
-    .find()
-    .then((data) => {
-      events = data;
-    })
-    .then(() => {
-      res.json(events);
-    });
+const getEvents = async (req, res) => {
+  const events = await eventsdb.find();
+  res.json(events);
 };
 
 module.exports = getEvents;
