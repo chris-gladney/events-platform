@@ -4,9 +4,9 @@ const Header = ({ setBasketOpened }) => {
   return (
     <header>
       <ul className="header-list">
-        <li className="header-item">
+        {/* <li className="header-item">
           <Account />
-        </li>
+        </li> */}
         <li className="header-item">
           <a className="events-link">Events</a>
         </li>

@@ -1,77 +1,22 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import EventInstance from "./EventInstance";
+import axios from "../api/axios";
+import AuthContext from "../context/AuthProvider";
 
 const Events = ({ admin, basket, setBasket }) => {
-  const eventsArray = [
-    {
-      name: "name1",
-      location: {
-        street: "street",
-        streetNumber: "street-number",
-        city: "city",
-        postcode: "postcode",
-      },
-      date: "dd-mm-yyyy",
-      price: "£££££",
-    },
-    {
-      name: "name2",
-      location: {
-        street: "street",
-        streetNumber: "street-number",
-        city: "city",
-        postcode: "postcode",
-      },
-      date: "dd-mm-yyyy",
-      price: "£££££",
-    },
-    {
-      name: "name3",
-      location: {
-        street: "street",
-        streetNumber: "street-number",
-        city: "city",
-        postcode: "postcode",
-      },
-      date: "dd-mm-yyyy",
-      price: "£££££",
-    },
-    {
-      name: "name4",
-      location: {
-        street: "street",
-        streetNumber: "street-number",
-        city: "city",
-        postcode: "postcode",
-      },
-      date: "dd-mm-yyyy",
-      price: "£££££",
-    },
-    {
-      name: "name5",
-      location: {
-        street: "street",
-        streetNumber: "street-number",
-        city: "city",
-        postcode: "postcode",
-      },
-      date: "dd-mm-yyyy",
-      price: "£££££",
-    },
-    {
-      name: "name6",
-      location: {
-        street: "street",
-        streetNumber: "street-number",
-        city: "city",
-        postcode: "postcode",
-      },
-      date: "dd-mm-yyyy",
-      price: "£££££",
-    },
-  ];
-
-  const [events, setEvents] = useState(eventsArray);
+  // const config = {
+  //   headers: { Authorization: `Bearer ${token}` }
+  //   };
+  const { auth } = useContext(AuthContext);
+  const [events, setEvents] = useState([]);
+  useEffect(() => {
+    console.log(auth, "<<< auth");
+    const config = {
+      headers: { authorization: `Bearer ${auth.accessToken}` },
+    };
+    console.log(auth.token);
+    axios.get("/events", config).then(({ data }) => setEvents(data));
+  }, []);
 
   return (
     <div className="events">

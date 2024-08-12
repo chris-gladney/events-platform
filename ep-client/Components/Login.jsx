@@ -1,17 +1,16 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import Google from "./Google";
-import axios from "axios";
+import axios from "../api/axios";
 import { useContext, useState } from "react";
 import useAuth from "../hooks/useAuth";
-import { UserContext } from "../src/App";
 
 const Login = () => {
   const { setAuth } = useAuth();
-  const { setUser } = useContext(UserContext);
+  // const { setUser } = useContext(UserContext);
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  // const from = location.state?.from?.pathname || "/";
 
   const [userLogin, setUserLogin] = useState("");
   const [pwd, setPwd] = useState("");
@@ -20,26 +19,32 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/auth",
+        "/auth",
         JSON.stringify({ user: userLogin, pwd }),
         {
           headers: {
-            Authorization: "Bearer",
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
           },
           withCredentials: true,
         }
       );
-      console.log(JSON.stringify(response));
+      console.log(JSON.stringify(response.data));
 
       const accessToken = response?.data?.accessToken;
       const loggedInUser = response?.data?.user;
+      const role = response?.data?.role;
 
-      setUser(loggedInUser);
+      console.log(accessToken, "<<< accessToken");
+      console.log(loggedInUser, "<<< user");
+      console.log(role, "<<< role");
+
+      setAuth({ user: userLogin, role, accessToken });
+      setUserLogin("");
       setPwd("");
-      navigate(from, { replace: true });
-    } catch (err) {+
+      setUserLogin({ user: userLogin, role });
+      navigate("/events", { replace: true });
+    } catch (err) {
       console.log(err);
     }
   };

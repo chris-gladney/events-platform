@@ -9,7 +9,7 @@ const APIPORT = 5000;
 
 const LoggedIn = () => {
   const [basketOpened, setBasketOpened] = useState(false);
-  const { user, setUser } = useContext(UserContext);
+  // const { user, setUser } = useContext(UserContext);
   const [basket, setBasket] = useState([]);
 
   const getUser = async () => {
@@ -19,7 +19,7 @@ const LoggedIn = () => {
         { withCredentials: true }
       );
       console.log("response", response);
-      setUser(response.data.user);
+      // setUser(response.data.user);
     } catch (error) {
       console.log("error", error);
     }
@@ -33,7 +33,11 @@ const LoggedIn = () => {
     <>
       <Header setBasketOpened={setBasketOpened} />
       <Model isOpen={basketOpened} appElement={document.getElementById("root")}>
-        <Basket setBasketOpened={setBasketOpened} basket={basket} setBasket={setBasket} />
+        <Basket
+          setBasketOpened={setBasketOpened}
+          basket={basket}
+          setBasket={setBasket}
+        />
       </Model>
       <Events admin={false} basket={basket} setBasket={setBasket} />
     </>
