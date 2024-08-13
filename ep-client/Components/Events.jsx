@@ -1,21 +1,36 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import EventInstance from "./EventInstance";
-import axios from "../api/axios";
-import AuthContext from "../context/AuthProvider";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Events = ({ admin, basket, setBasket }) => {
-  // const config = {
-  //   headers: { Authorization: `Bearer ${token}` }
-  //   };
-  const { auth } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
+  const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const location = useLocation();
+
   useEffect(() => {
-    console.log(auth, "<<< auth");
-    const config = {
-      headers: { authorization: `Bearer ${auth.accessToken}` },
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const getEvents = async () => {
+      try {
+        const response = await axiosPrivate.get("/events", {
+          signal: controller.signal,
+        });
+        isMounted && setEvents(response.data);
+      } catch (err) {
+        console.log(err);
+        navigate("/", { state: { from: location }, replace: true });
+      }
     };
-    console.log(auth.token);
-    axios.get("/events", config).then(({ data }) => setEvents(data));
+
+    getEvents();
+
+    return () => {
+      isMounted = false;
+      controller.abort();
+    };
   }, []);
 
   return (

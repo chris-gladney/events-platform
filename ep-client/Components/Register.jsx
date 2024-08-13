@@ -25,7 +25,7 @@ const Register = () => {
   const userRef = useRef();
   const errRef = useRef();
 
-  const { setUser } = useContext(UserContext);
+  // const { setUser } = useContext(UserContext);
 
   const [newUser, setNewUser] = useState("");
   const [validName, setValidName] = useState(false);
@@ -43,7 +43,7 @@ const Register = () => {
 
   useEffect(() => {
     userRef.current.focus();
-    setUser({});
+    // setUser({});
   }, []);
 
   useEffect(() => {
@@ -84,7 +84,6 @@ const Register = () => {
         }
       );
       console.log(JSON.stringify(response));
-      const accessToken = response?.data?.accessToken;
       setNewUser("");
       setPwd("");
       navigate(from, { replace: true });

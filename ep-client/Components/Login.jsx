@@ -10,7 +10,7 @@ const Login = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  // const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/";
 
   const [userLogin, setUserLogin] = useState("");
   const [pwd, setPwd] = useState("");
@@ -29,15 +29,15 @@ const Login = () => {
           withCredentials: true,
         }
       );
-      console.log(JSON.stringify(response.data));
+      // console.log(JSON.stringify(response.data));
 
       const accessToken = response?.data?.accessToken;
       const loggedInUser = response?.data?.user;
       const role = response?.data?.role;
 
-      console.log(accessToken, "<<< accessToken");
-      console.log(loggedInUser, "<<< user");
-      console.log(role, "<<< role");
+      // console.log(accessToken, "<<< accessToken");
+      // console.log(loggedInUser, "<<< user");
+      // console.log(role, "<<< role");
 
       setAuth({ user: userLogin, role, accessToken });
       setUserLogin("");

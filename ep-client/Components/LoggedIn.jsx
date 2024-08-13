@@ -12,22 +12,22 @@ const LoggedIn = () => {
   // const { user, setUser } = useContext(UserContext);
   const [basket, setBasket] = useState([]);
 
-  const getUser = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:${APIPORT}/login/success`,
-        { withCredentials: true }
-      );
-      console.log("response", response);
-      // setUser(response.data.user);
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
+  // const getUser = async () => {
+  //   try {
+  //     // const response = await axios.get(
+  //     //   `http://localhost:${APIPORT}/login/success`,
+  //     //   { withCredentials: true }
+  //     // );
+  //     // console.log("response", response);
+  //     // setUser(response.data.user);
+  //   } catch (error) {
+  //     console.log("error", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getUser();
-  }, []);
+  // useEffect(() => {
+  //   getUser();
+  // }, []);
 
   return (
     <>

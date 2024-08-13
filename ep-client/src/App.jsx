@@ -22,16 +22,19 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
 
-      {/* Protect the routes below */}
-      {/* <UserContext.Provider value={{ user, setUser }}> */}
-        <Route element={<RequireAuth />}>
+        {/* Protect the routes below */}
+        {/* <UserContext.Provider value={{ user, setUser }}> */}
+        <Route element={<RequireAuth allowedRoles={[2001, 5150]} />}>
           <Route path="/events" element={<LoggedIn />} />
+        </Route>
+
+        <Route element={<RequireAuth allowedRoles={[5150]} />}>
           <Route path="/admin" element={<AdminPage />} />
         </Route>
-      {/* </UserContext.Provider> */}
+        {/* </UserContext.Provider> */}
 
-      {/* Route to redirect if failure */}
-      <Route path="/" element={<LoginPage />} />
+        {/* Route to redirect if failure */}
+        <Route path="/" element={<LoginPage />} />
       </Route>
     </Routes>
   );

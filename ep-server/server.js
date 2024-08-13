@@ -115,13 +115,13 @@ app.get(
   })
 );
 
-app.get("/login/success", async (req, res) => {
-  if (req.user) {
-    res.status(200).json({ message: "user login", user: req.user });
-  } else {
-    // res.sendStatus(400).json({ message: "Not Authorised" });
-  }
-});
+// app.get("/login/success", (req, res) => {
+//   if (req.user) {
+//     res.status(200).json({ message: "user login", user: req.user });
+//   } else {
+//     res.sendStatus(400).json({ message: "Not Authorised" });
+//   }
+// });
 
 // Google login ends
 // --------------------------------------------------------------------

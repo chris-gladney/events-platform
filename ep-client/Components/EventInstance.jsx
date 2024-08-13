@@ -1,5 +1,4 @@
 const EventInstance = ({ event, admin, basket, setBasket }) => {
-  console.log(event);
   return (
     <section className="event">
       <h2 className="name">{event.name}</h2>
