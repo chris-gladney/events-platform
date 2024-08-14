@@ -1,9 +1,12 @@
 import basketImg from "../assets/basket.png";
 import useAuth from "../hooks/useAuth";
 import BasketItem from "./BasketItem";
+import { useState } from "react";
 
 const Basket = ({ setBasketOpened, basket, setBasket, setUserEvents }) => {
   const { auth } = useAuth();
+  const [addToGoogle, setAddToGoogle] = useState(false);
+
   const handlePayments = (e) => {
     e.preventDefault();
     console.log(auth);
@@ -25,6 +28,7 @@ const Basket = ({ setBasketOpened, basket, setBasket, setUserEvents }) => {
       body: JSON.stringify({
         items: itemsToSend,
         user: auth.user,
+        addToGoogle,
       }),
     })
       .then((res) => {
@@ -34,10 +38,7 @@ const Basket = ({ setBasketOpened, basket, setBasket, setUserEvents }) => {
         }
         return res.json().then((json) => Promise.reject(json));
       })
-      .then(({ url, event }) => {
-        setUserEvents((prevUserEvents) => {
-          return [...prevUserEvents, event]
-        })
+      .then(({ url }) => {
         window.location = url;
       })
       .catch((err) => console.log(err));
@@ -69,7 +70,14 @@ const Basket = ({ setBasketOpened, basket, setBasket, setUserEvents }) => {
       <form className="basket-form" onSubmit={handlePayments}>
         <div className="google-calendar-add">
           <label htmlFor="add-to-calendar">Add to google calendar</label>
-          <input type="checkbox" id="add-to-calendar" name="add-to-calendar" />
+          <input
+            type="checkbox"
+            id="add-to-calendar"
+            name="add-to-calendar"
+            onChange={() => {
+              setAddToGoogle(!addToGoogle);
+            }}
+          />
         </div>
         <input type="submit" value="checkout" />
       </form>

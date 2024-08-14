@@ -138,6 +138,10 @@ app.get("/login/success", (req, res) => {
 // Google login ends
 // --------------------------------------------------------------------
 
+app.get("/hello", (req, res) => {
+  res.json({ message: "Hello" });
+});
+
 app.post("/auth", (req, res) => {
   userLogin(req, res);
 });

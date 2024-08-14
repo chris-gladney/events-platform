@@ -1,9 +1,12 @@
-const Google = () => {
-  const loginWithGoogle = () => {
-    window.open("http://localhost:5000/auth/google/callback", "_self");
+const Google = ({ userEvents }) => {
+  
+  const handleGoogleCalendar = () => {
+    console.log(userEvents)
   };
 
-  return <button onClick={loginWithGoogle}>Sign in with Google</button>;
+  handleGoogleCalendar()
+
+  return <button onClick={handleGoogleCalendar}>Add to google calendar</button>;
 };
 
 export default Google;

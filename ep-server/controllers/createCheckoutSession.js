@@ -1,11 +1,10 @@
 const eventsdb = require("../model/eventsSchema");
-const nonGoogleUserdb = require("../model/nonGoogleUserSchema");
 
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 const createCheckoutSession = async (req, res) => {
   try {
-    let eventToSendAsResponse;
+    const eventsToSendAsResponse = [];
     const allEvents = await eventsdb.find();
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -14,7 +13,7 @@ const createCheckoutSession = async (req, res) => {
         let eventToSend;
         allEvents.forEach((event) => {
           if (event.name === item[1].name) {
-            eventToSendAsResponse = event;
+            eventsToSendAsResponse.push(event);
             eventToSend = event;
           }
         });
@@ -32,8 +31,13 @@ const createCheckoutSession = async (req, res) => {
       success_url: "http://localhost:5173/success",
       cancel_url: "http://localhost:5173/failure",
     });
-    await nonGoogleUserdb.findOneAndUpdate({ user: req.body.user });
-    res.json({ url: session.url, event: eventToSendAsResponse });
+    if (req.body.addToGoogle) {
+      console.log({ url: session.url, events: eventsToSendAsResponse })
+      res.json({ url: session.url, events: eventsToSendAsResponse });
+      
+    } else {
+      res.json({ url: session.url });
+    }
   } catch (err) {
     console.log(err);
     res.sendStatus(500);
