@@ -2,8 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 
 const PORT = 5000;
@@ -28,6 +26,7 @@ const handleRefreshToken = require("./controllers/refreshToken");
 const getEvents = require("./controllers/getEvents");
 const handleLogout = require("./controllers/logout");
 const handlePostEvents = require("./controllers/handlePostEvents");
+const createCheckoutSession = require("./controllers/createCheckoutSession");
 
 app.use(
   cors({
@@ -81,7 +80,7 @@ passport.use(
             email: profile.emails[0].value,
             image: profile.photos[0].value,
             userEvents: [],
-            refreshToken: "",
+            refreshToken,
           });
 
           await user.save();
@@ -107,21 +106,22 @@ app.get(
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-app.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
+app.get("/auth/google/callback", (req, res) => {
+  console.log(req, "<<< req");
+  // console.log(res, "<<< res");
+  return passport.authenticate("google", {
     successRedirect: `http://localhost:${FEPORT}/events`,
     failureRedirect: `http://localhost:${FEPORT}/login`,
-  })
-);
+  });
+});
 
-// app.get("/login/success", (req, res) => {
-//   if (req.user) {
-//     res.status(200).json({ message: "user login", user: req.user });
-//   } else {
-//     res.sendStatus(400).json({ message: "Not Authorised" });
-//   }
-// });
+app.get("/login/success", (req, res) => {
+  if (req.user) {
+    res.status(200).json({ message: "user login", user: req.user });
+  } else {
+    res.sendStatus(400).json({ message: "Not Authorised" });
+  }
+});
 
 // Google login ends
 // --------------------------------------------------------------------
@@ -136,6 +136,10 @@ app.get("/refresh", (req, res) => {
 
 app.get("/logout", (req, res) => {
   handleLogout(req, res);
+});
+
+app.post("/create-checkout-session", (req, res) => {
+  createCheckoutSession(req, res);
 });
 
 // Using jwt verify all routes that need to be validated need to be below this

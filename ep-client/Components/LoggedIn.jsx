@@ -1,11 +1,8 @@
-import { useState, useContext, useEffect } from "react";
+import { useState } from "react";
 import Events from "./Events";
 import Header from "./Header";
 import Model from "react-modal";
 import Basket from "./Basket";
-import { UserContext } from "../src/App";
-import axios from "axios";
-const APIPORT = 5000;
 
 const LoggedIn = () => {
   const [basketOpened, setBasketOpened] = useState(false);

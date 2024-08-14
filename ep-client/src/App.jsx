@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useState, createContext } from "react";
 import "./App.css";
 import LoggedIn from "../Components/LoggedIn";
@@ -35,6 +35,7 @@ function App() {
 
         {/* Route to redirect if failure */}
         <Route path="/" element={<LoginPage />} />
+        
       </Route>
     </Routes>
   );

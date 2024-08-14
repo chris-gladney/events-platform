@@ -2,6 +2,38 @@ import basketImg from "../assets/basket.png";
 import BasketItem from "./BasketItem";
 
 const Basket = ({ setBasketOpened, basket, setBasket }) => {
+  const handlePayments = (e) => {
+    e.preventDefault();
+    const itemsToSend = [];
+    let idItem = 1;
+    basket.forEach((event) => {
+      itemsToSend.push([
+        idItem,
+        { priceInPennies: event.priceInPennies, name: event.name },
+      ]);
+      idItem++;
+    });
+    fetch("http://localhost:5000/create-checkout-session", {
+      method: "POST",
+      headers: {
+        "Origin": "http://localhost:5000",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        items: itemsToSend,
+      }),
+    })
+      .then((res) => {
+        console.log(res, "<<< response");
+        if (res.ok) return res.json();
+        return res.json().then((json) => Promise.reject(json));
+      })
+      .then(({ url }) => {
+        window.location = url;
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <div className="basket-popup">
       <button
@@ -15,17 +47,17 @@ const Basket = ({ setBasketOpened, basket, setBasket }) => {
       <img src={basketImg} className="basket-img" />
       <h2 className="basket">Basket</h2>
 
-      {basket.map((event) => {
+      {basket.map((event, i) => {
         return (
           <BasketItem
-            key={event}
+            key={i}
             event={event}
             basket={basket}
             setBasket={setBasket}
           />
         );
       })}
-      <form className="basket-form">
+      <form className="basket-form" onSubmit={handlePayments}>
         <div className="google-calendar-add">
           <label htmlFor="add-to-calendar">Add to google calendar</label>
           <input type="checkbox" id="add-to-calendar" name="add-to-calendar" />
