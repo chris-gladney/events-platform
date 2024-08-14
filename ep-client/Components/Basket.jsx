@@ -1,9 +1,12 @@
 import basketImg from "../assets/basket.png";
+import useAuth from "../hooks/useAuth";
 import BasketItem from "./BasketItem";
 
-const Basket = ({ setBasketOpened, basket, setBasket }) => {
+const Basket = ({ setBasketOpened, basket, setBasket, setUserEvents }) => {
+  const { auth } = useAuth();
   const handlePayments = (e) => {
     e.preventDefault();
+    console.log(auth);
     const itemsToSend = [];
     let idItem = 1;
     basket.forEach((event) => {
@@ -16,19 +19,25 @@ const Basket = ({ setBasketOpened, basket, setBasket }) => {
     fetch("http://localhost:5000/create-checkout-session", {
       method: "POST",
       headers: {
-        "Origin": "http://localhost:5000",
+        Origin: "http://localhost:5000",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         items: itemsToSend,
+        user: auth.user,
       }),
     })
       .then((res) => {
         console.log(res, "<<< response");
-        if (res.ok) return res.json();
+        if (res.ok) {
+          return res.json();
+        }
         return res.json().then((json) => Promise.reject(json));
       })
-      .then(({ url }) => {
+      .then(({ url, event }) => {
+        setUserEvents((prevUserEvents) => {
+          return [...prevUserEvents, event]
+        })
         window.location = url;
       })
       .catch((err) => console.log(err));

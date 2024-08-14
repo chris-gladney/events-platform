@@ -4,7 +4,7 @@ import Header from "./Header";
 import Model from "react-modal";
 import Basket from "./Basket";
 
-const LoggedIn = () => {
+const LoggedIn = ({ setUserEvents }) => {
   const [basketOpened, setBasketOpened] = useState(false);
   // const { user, setUser } = useContext(UserContext);
   const [basket, setBasket] = useState([]);
@@ -34,6 +34,7 @@ const LoggedIn = () => {
           setBasketOpened={setBasketOpened}
           basket={basket}
           setBasket={setBasket}
+          setUserEvents={setUserEvents} 
         />
       </Model>
       <Events admin={false} basket={basket} setBasket={setBasket} />

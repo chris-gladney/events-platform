@@ -8,35 +8,38 @@ import AdminLogin from "../Components/AdminLogin";
 import Register from "../Components/Register";
 import RequireAuth from "../Components/RequireAuth";
 import Layout from "../Components/Layout";
+import PaymentSuccess from "../Components/PaymentSuccess";
 
-export const UserContext = createContext();
+export const UserEventsContext = createContext();
 
 function App() {
-  const [user, setUser] = useState({});
+  const [userEvents, setUserEvents] = useState([]);
 
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        {/* Public routes */}
         <Route path="/" element={<LoginPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/adminlogin" element={<AdminLogin />} />
 
-        {/* Protect the routes below */}
-        {/* <UserContext.Provider value={{ user, setUser }}> */}
         <Route element={<RequireAuth allowedRoles={[2001, 5150]} />}>
-          <Route path="/events" element={<LoggedIn />} />
+          <Route
+            path="/events"
+            element={<LoggedIn setUserEvents={setUserEvents} />}
+          />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={[5150]} />}>
           <Route path="/admin" element={<AdminPage />} />
         </Route>
-        {/* </UserContext.Provider> */}
 
-        {/* Route to redirect if failure */}
         <Route path="/" element={<LoginPage />} />
-        
       </Route>
+
+      <Route
+        path="/success"
+        element={<PaymentSuccess userEvents={userEvents} />}
+      />
     </Routes>
   );
 }

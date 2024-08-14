@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
 
 const PORT = 5000;
 const FEPORT = 5173;
@@ -73,6 +74,18 @@ passport.use(
       try {
         let user = await userdb.findOne({ googleId: profile.id });
 
+        // const accessToken = jwt.sign(
+        //   { username: foundUser.user, role: foundUser.role },
+        //   process.env.ACCESS_TOKEN_SECRET,
+        //   { expiresIn: 600 }
+        // );
+
+        const refreshToken = jwt.sign(
+          { username: user.googleId },
+          process.env.REFRESH_TOKEN_SECRET,
+          { expiresIn: "1d" }
+        );
+
         if (!user) {
           user = new userdb({
             googleId: profile.id,
@@ -106,14 +119,13 @@ app.get(
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-app.get("/auth/google/callback", (req, res) => {
-  console.log(req, "<<< req");
-  // console.log(res, "<<< res");
-  return passport.authenticate("google", {
-    successRedirect: `http://localhost:${FEPORT}/events`,
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: `http://localhost:${FEPORT}/googleEvents`,
     failureRedirect: `http://localhost:${FEPORT}/login`,
-  });
-});
+  })
+);
 
 app.get("/login/success", (req, res) => {
   if (req.user) {

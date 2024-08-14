@@ -85,7 +85,7 @@ const Login = () => {
       <Link to="/register">
         <button className="login-btn">Register</button>
       </Link>
-      <Google />
+      {/* <Google /> */}
       <Link to="/adminlogin">
         <button className="admin-login-btn">Admin Login</button>
       </Link>
