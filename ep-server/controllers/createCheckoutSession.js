@@ -6,6 +6,7 @@ const createCheckoutSession = async (req, res) => {
   try {
     const eventsToSendAsResponse = [];
     const allEvents = await eventsdb.find();
+    // Query db directly for price
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
@@ -32,9 +33,9 @@ const createCheckoutSession = async (req, res) => {
       cancel_url: "http://localhost:5173/failure",
     });
     if (req.body.addToGoogle) {
-      console.log({ url: session.url, events: eventsToSendAsResponse })
+      // If user wants to send to google calendar the 
+      // user events are making it here
       res.json({ url: session.url, events: eventsToSendAsResponse });
-      
     } else {
       res.json({ url: session.url });
     }

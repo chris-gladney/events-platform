@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useState, createContext } from "react";
+import { useState } from "react";
 import "./App.css";
 import LoggedIn from "../Components/LoggedIn";
 import AdminPage from "../Components/AdminPage";
@@ -10,10 +10,12 @@ import RequireAuth from "../Components/RequireAuth";
 import Layout from "../Components/Layout";
 import PaymentSuccess from "../Components/PaymentSuccess";
 
-export const UserEventsContext = createContext();
-
 function App() {
   const [userEvents, setUserEvents] = useState([]);
+
+  // add an event context to the basket and payment
+  // success components. This is the data that will
+  // be sent to the google calendar api
 
   return (
     <Routes>
@@ -34,12 +36,11 @@ function App() {
         </Route>
 
         <Route path="/" element={<LoginPage />} />
+        <Route
+          path="/success"
+          element={<PaymentSuccess userEvents={userEvents} />}
+        />
       </Route>
-
-      <Route
-        path="/success"
-        element={<PaymentSuccess userEvents={userEvents} />}
-      />
     </Routes>
   );
 }

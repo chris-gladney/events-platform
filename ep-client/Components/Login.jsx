@@ -6,7 +6,6 @@ import useAuth from "../hooks/useAuth";
 
 const Login = () => {
   const { setAuth } = useAuth();
-  // const { setUser } = useContext(UserContext);
 
   const navigate = useNavigate();
   const location = useLocation();

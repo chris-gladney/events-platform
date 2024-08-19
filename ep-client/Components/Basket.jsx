@@ -9,14 +9,10 @@ const Basket = ({ setBasketOpened, basket, setBasket, setUserEvents }) => {
 
   const handlePayments = (e) => {
     e.preventDefault();
-    console.log(auth);
     const itemsToSend = [];
     let idItem = 1;
     basket.forEach((event) => {
-      itemsToSend.push([
-        idItem,
-        { priceInPennies: event.priceInPennies, name: event.name },
-      ]);
+      itemsToSend.push([idItem, event]);
       idItem++;
     });
     fetch("http://localhost:5000/create-checkout-session", {
@@ -32,13 +28,21 @@ const Basket = ({ setBasketOpened, basket, setBasket, setUserEvents }) => {
       }),
     })
       .then((res) => {
-        console.log(res, "<<< response");
         if (res.ok) {
           return res.json();
         }
         return res.json().then((json) => Promise.reject(json));
       })
-      .then(({ url }) => {
+      .then((resData) => {
+        // console.log(resData.events[0], "<<< data");
+        // Event gets through to here. Something wrong
+        // with the way the state is set
+        if (resData.events.length !== 0) {
+          setUserEvents(resData.events);
+        }
+        return resData.url;
+      })
+      .then((url) => {
         window.location = url;
       })
       .catch((err) => console.log(err));

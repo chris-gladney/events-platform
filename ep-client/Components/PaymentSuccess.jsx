@@ -2,7 +2,9 @@ import Google from "./Google";
 import { useEffect } from "react";
 
 const PaymentSuccess = ({ userEvents }) => {
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(userEvents, "<<< userEvents")
+  }, []);
 
   return (
     <div className="payment-success">
@@ -10,7 +12,7 @@ const PaymentSuccess = ({ userEvents }) => {
         Payment complete! Click the google button to add this event(s) to your
         google calendar
       </p>
-      <Google userEvents={userEvents} />
+      {/* <Google userEvents={userEvents} /> */}
     </div>
   );
 };

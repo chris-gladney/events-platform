@@ -158,6 +158,13 @@ app.post("/create-checkout-session", (req, res) => {
   createCheckoutSession(req, res);
 });
 
+app.post("/adminauth", (req, res) => {
+  userLogin(req, res);
+});
+app.post("/events", (req, res) => {
+  handlePostEvents(req, res);
+});
+
 // Using jwt verify all routes that need to be validated need to be below this
 app.use(verifyJWT);
 
@@ -165,9 +172,6 @@ app.get("/events", (req, res) => {
   getEvents(req, res);
 });
 
-app.post("/events", (req, res) => {
-  handlePostEvents(req, res);
-});
 
 app.listen(PORT, () => {
   console.log(`server started at port: ${PORT}`);
