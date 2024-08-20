@@ -14,7 +14,7 @@ To recap, your .env file should look as follows:
 
 To create your own admin account for you local machine follow these steps:
 - Navigate to ep-server
-- Run the command "npm run createAdmin <your username> <your password>
+- Run the command "npm run createAdmin <your username> <your password>"
 - You can then login with your admin account
 
 Finally, to run the application, run the command "npm run dev".
