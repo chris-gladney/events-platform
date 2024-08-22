@@ -1,7 +1,6 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import Google from "./Google";
 import axios from "../api/axios";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import useAuth from "../hooks/useAuth";
 
 const Login = () => {

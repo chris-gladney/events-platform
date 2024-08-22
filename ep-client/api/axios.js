@@ -2,11 +2,15 @@ import axios from "axios";
 
 export default axios.create({
   withCredentials: true,
-  baseURL: "http://localhost:5000",
+  baseURL: import.meta.env.PROD
+    ? import.meta.env.VITE_AXIOS_PROD
+    : import.meta.env.VITE_AXIOS_DEV,
 });
 
 export const axiosPrivate = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: import.meta.env.PROD
+  ? import.meta.env.VITE_AXIOS_PROD
+  : import.meta.env.VITE_AXIOS_DEV,
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });

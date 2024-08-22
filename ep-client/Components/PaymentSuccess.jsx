@@ -1,4 +1,3 @@
-import Google from "./Google";
 import { useEffect } from "react";
 
 const PaymentSuccess = ({ userEvents }) => {

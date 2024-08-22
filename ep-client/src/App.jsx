@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import LoggedIn from "../Components/LoggedIn";
 import AdminPage from "../Components/AdminPage";
@@ -12,6 +12,10 @@ import PaymentSuccess from "../Components/PaymentSuccess";
 
 function App() {
   const [userEvents, setUserEvents] = useState([]);
+
+  // useEffect(() => {
+  //   alert(JSON.stringify(import.meta.env))
+  // }, [])
 
   // add an event context to the basket and payment
   // success components. This is the data that will

@@ -15,18 +15,27 @@ const Basket = ({ setBasketOpened, basket, setBasket, setUserEvents }) => {
       itemsToSend.push([idItem, event]);
       idItem++;
     });
-    fetch("http://localhost:5000/create-checkout-session", {
-      method: "POST",
-      headers: {
-        Origin: "http://localhost:5000",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        items: itemsToSend,
-        user: auth.user,
-        addToGoogle,
-      }),
-    })
+    fetch(
+      `${
+        import.meta.env.PROD
+          ? import.meta.env.VITE_AXIOS_PROD
+          : import.meta.env.VITE_AXIOS_DEV
+      }/create-checkout-session`,
+      {
+        method: "POST",
+        headers: {
+          Origin: import.meta.env.PROD
+            ? import.meta.env.VITE_AXIOS_PROD
+            : import.meta.env.VITE_AXIOS_DEV,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          items: itemsToSend,
+          user: auth.user,
+          addToGoogle,
+        }),
+      }
+    )
       .then((res) => {
         if (res.ok) {
           return res.json();

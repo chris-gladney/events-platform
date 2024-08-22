@@ -31,7 +31,7 @@ const createCheckoutSession = require("./controllers/createCheckoutSession");
 
 app.use(
   cors({
-    origin: `http://localhost:${FEPORT}`,
+    origin: process.env.CORS_ORIGIN,
     methods: "GET, POST, PUT, DELETE",
     credentials: true,
   })
@@ -171,7 +171,6 @@ app.use(verifyJWT);
 app.get("/events", (req, res) => {
   getEvents(req, res);
 });
-
 
 app.listen(PORT, () => {
   console.log(`server started at port: ${PORT}`);
